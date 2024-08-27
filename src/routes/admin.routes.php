@@ -14,7 +14,8 @@ use controller\admin\ManageDepartmentController;
 
 $router = Express::Router();
 
-$router->get("/", fn(Request $req, Response $res) => AdminController::renderDashboard($req, $res));
+/**Batch Routes */
+$router->get("/", fn(Request $req, Response $res) => ManageBatchController::renderScreen($req, $res));
 
 /**Booking Routes */
 $router->get("/booking", fn(Request $req, Response $res) => ManageBookingController::renderScreen($req, $res));
