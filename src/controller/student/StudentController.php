@@ -55,13 +55,25 @@ class StudentController
         $currentID = $_SESSION["UID"];
 
         $credentials = (new Model("STUDENT"))->find(["ID" => $currentID], ["select" => "YEARLEVEL"]);
-        $booking_list = (new Model("BATCHES"))->find(["#or" => ["STATUS" => "Active",]]);
+        $booking_list = (new Model("BATCHES"))->find(["STATUS" => "Active"]);
 
-        $updated_booking_list = array_filter($booking_list, function ($item) use ($credentials) {
-            return $item["STATUS"] === "Active" &&
-                (substr($item["YEARLEVEL"], 0, 1) === substr($credentials["YEARLEVEL"], 0, 1) ||
-                    $item["YEARLEVEL"] === "1st");
-        });
+
+
+// Filter the booking list
+if (!empty($credentials) && isset($credentials[0]["YEARLEVEL"])) {
+    $yearLevel = $credentials[0]["YEARLEVEL"];
+
+    $updated_booking_list = array_filter($booking_list, function ($item) use ($yearLevel) {
+        return 
+            (isset($item["STATUS"]) && $item["STATUS"] === "Active") &&
+            (isset($item["YEARLEVEL"]) && $item["YEARLEVEL"] === $yearLevel);
+    });
+
+   
+} else {
+    // Handle the case where credentials are not found
+    $updated_booking_list = [];
+}
 
         $res->status(200)->render("views/student/booking/screen.view.php", ["booking" => $updated_booking_list]);
     }
