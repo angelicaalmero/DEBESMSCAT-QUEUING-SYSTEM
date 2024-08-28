@@ -83,7 +83,10 @@ if (!empty($credentials) && isset($credentials[0]["YEARLEVEL"])) {
 
         $batch_id = $req->query["id"];
         $batch_credentials = (new Model("BATCHES"))->findOne(["BATCH_ID" => $batch_id]);
+
         $request_form_list = require from("controller/student/data/request_form.data.php");
+
+
 
 
         $res->status(200)->render("views/student/booking/pages/apply.view.php", ["details" => $batch_credentials, "request_form_list" => $request_form_list]);

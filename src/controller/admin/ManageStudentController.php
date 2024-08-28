@@ -114,7 +114,7 @@ class ManageStudentController
         $hashed_password = password_hash($password, PASSWORD_BCRYPT, ["cost" => 10]);
         unset($req->body["PASSWORD"]);
 
-        // generate UUID
+        // generate UUI
         $UID = Uuid::uuid4()->toString();
 
         // Store the payload
